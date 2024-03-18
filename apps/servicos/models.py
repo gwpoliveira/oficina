@@ -23,7 +23,7 @@ class Servico(models.Model):
         
 class OrdemServico(models.Model):
     oficina = models.ForeignKey(Oficina, verbose_name = 'Oficina', on_delete=models.CASCADE )
-    mecanico = models.ForeignKey(Mecanico, verbose_name = 'Mecanico', on_delete=models.SET_NUL, null=True )
+    mecanico = models.ForeignKey(Mecanico, verbose_name = 'Mecanico', on_delete=models.SET_NULL, null=True )
     cliente = models.CharField(verbose_name='Cliente', max_length=100)
     veiculo = models.CharField(verbose_name='Veiculo', max_length=100, help_text='Ex: Honda Fan 160')
     placa = models.CharField(verbose_name='Veiculo', max_length=8, help_text='Ex: BRA-2145')
