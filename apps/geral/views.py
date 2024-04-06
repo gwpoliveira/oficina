@@ -1,10 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import login_required
+from django.contrib.auth.decorators import login_required
 
 
 from .forms import OficinaForm
 from .models import Oficina
+
+def home(request):
+    template_name = 'geral/home.html'
+    context = {}
+    return render(request, template_name, context)
 
 @login_required
 def nova_oficina(request):
