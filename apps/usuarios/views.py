@@ -1,7 +1,9 @@
-from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 from .forms import LoginForm
-from django.http import HttpResponse
 
 # Create your views here.
 
@@ -16,13 +18,23 @@ def login_usuario(request):
             user = authenticate(username=usuario, password=senha)
             if user is not None and user.is_active:
                 login(request, user)
-                return HttpResponse('<h1>Você fez Login!</h1>')
+                messages.info(request, 'Você fez login com sucesso')
+                return redirect('geral:home')
             
+            else:
+                messages.error(request, 'Usuário ou Senha incorreta')
+                return redirect(request, 'usuarios:login')
         else:
-            return HttpResponse('<h1>Erro no Login!</h1>')
+            messages.error(request, 'Formulário inválido')
+            return redirect(request, 'usuarios:login')
         
     form = LoginForm()
     context['form'] = form
     return render(request, template_name, context)
+
+@login_required
+def sair(request):
+    logout(request)
+    return redirect('usuarios:login')
 
 
