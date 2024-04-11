@@ -16,6 +16,24 @@
   <script defer src="{% static 'js/color-modes.js' %}"></script>
   <script defer src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
   <script defer src="{% static 'js/jquery.min.js' %}"></script>
+
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">   
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+
+  <link href="{% static 'css/sign-in.css' %}" rel="stylesheet">
+
+  <script defer src="{% static 'js/jquery.min.js' %}"></script>
+
+  <script defer src="{% static 'js/dashboard.js' %}"></script>
+
+  <script defer src="{% static 'js/color-modes.js' %}"></script>
+
+  <script defer src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
   <title>Login</title>
 
 
@@ -171,13 +189,13 @@
       </li>
     </ul>
   </div>
-
-
+  
   <main class="form-signin w-100 m-auto">
+    
     <form method="post">
       {%  csrf_token  %}
       <h1 class="h3 mb-3 fw-normal">Login</h1>
-     
+      {% include 'utils/messages.html' %}
       <div class="mb-3">           
         <label for="{{ form.usuario.id_for_label }}">{{ form.usuario.label }}</label>
         {% render_field form.usuario class="form-control" %}     

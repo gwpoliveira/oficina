@@ -22,15 +22,17 @@ def nova_oficina(request):
             of = form.save(commit=False)
             of.usuario = request.user
             of.save()
-            messages.sucesses(request, 'Oficina cadastradada com sucesso')
+            messages.success(request, 'Oficina cadastradada com sucesso')
             return redirect('geral:lista_oficina')
-    return render()
+    form = OficinaForm()
+    context['form'] = form
+    return render(request, template_name, context)
 
 
 def lista_oficina(request):
     template_name = 'geral/lista_oficina.html'
     oficinas = Oficina.objects.filter(usuario=request.user) # select * from oficina where usuario = usuario_de_sessão
     context ={
-        'oficina': oficinas,
+        'oficinas': oficinas,
     }
     return render(request, template_name, context)
