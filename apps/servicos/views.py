@@ -11,7 +11,7 @@ from geral.models import Oficina
 @login_required
 def lista_servicos(request):
     template_name = 'servicos/lista_servicos.html'
-    oficina = get_object_or_404(Oficina, usuario=request.user)
+    oficina = Oficina.objects.filter(usuario=request.user).first()
     servicos = Servico.objects.filter(oficina=oficina)
     context = {
         'servicos': servicos,
@@ -24,7 +24,7 @@ def novo_servico(request):
     context = {}
     if request.method == 'POST':
         form = ServicoForm(request.POST)
-        oficina = get_object_or_404(Oficina, usuario=request.user)
+        oficina = Oficina.objects.filter(usuario=request.user).first()
         if form.is_valid():
             sf = form.save(commit=False)
             sf.oficina = oficina
