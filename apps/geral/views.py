@@ -3,9 +3,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 
-from .forms import OficinaForm
+from .forms import OficinaForm, MecanicoForm
 
-from .models import Oficina
+from .models import Oficina, Mecanico
 
 
 @login_required
@@ -26,6 +26,10 @@ def nova_oficina(request):
             of.usuario = request.user
             of.save()
             messages.success(request, 'Oficina cadastradada com sucesso')
+            return redirect('geral:lista_oficina')
+        else:
+            messagem_erro = list(form.errors.values())[0][0]
+            messages.error(request, f'{messagem_erro}')
             return redirect('geral:lista_oficina')
     form = OficinaForm()
     context['form'] = form
@@ -60,6 +64,56 @@ def editar_oficina(request, pk):
         messages.success(request, 'Oficina atualizada com sucesso')
         return redirect('geral:lista_oficina')
     form = OficinaForm(instance=oficina)
+    context['form'] = form
+    return render(request, template_name, context)
+
+# ************************ - Mecânico - ************************
+@login_required
+def nova_oficina(request):
+    template_name = 'geral/novo_mecanico.html'
+    context = {}
+    oficina = get_object_or_404(Oficina, usuario=request.user)
+    if request.method == 'POST':
+        form = MecanicoForm(request.POST)
+        if form.is_valid():
+            mf = form.save(commit=False)
+            mf.oficina = oficina
+            mf.save()
+            messages.success(request, 'Mecanico cadastrado com sucesso')
+            return redirect('geral:lista_mecanico')
+
+    form = MecanicoForm
+    context['form'] = form
+    return render(request, template_name, context)
+
+@login_required
+def lista_mecanico(request):
+    template_name = 'geral/lista_mecanico.html'
+    oficina = get_object_or_404(Oficina, usuario=request.user)
+    mecanicos = Mecanico.objects.filter(oficina=oficina)
+    context = {
+        'mecanicos': mecanicos,
+    }
+    return render(request, template_name, context)
+
+@login_required
+def excluir_mecanico(request, pk):
+    mecanico = get_object_or_404(Mecanico, pk=pk)
+    mecanico.delete()
+    messages.info(request, 'Mecanico excluido com sucesso')
+    return redirect('geral:lista_mecanico')
+
+@login_required
+def editar_mecanico(request, pk):
+    template_name = 'geral/novo_mecanico.html'
+    context={}
+    mecanico = get_object_or_404(Mecanico, pk=pk)
+    if request.method == 'POST':
+        form = MecanicoForm(data=request.POST, instance=mecanico)
+        form.save()
+        messages.success(request, 'Mecanico atualizada com sucesso')
+        return redirect('geral:lista_mecanico')
+    form = MecanicoForm(instance=mecanico)
     context['form'] = form
     return render(request, template_name, context)
 
