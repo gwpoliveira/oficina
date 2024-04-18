@@ -12,6 +12,6 @@ urlpatterns = [
     path('novo-mecanico/', views.novo_mecanico, name='novo_mecanico'),
     path('mecanicos/', views.lista_mecanico, name='lista_mecanico'),
     path('excluir-mecanico/<int:pk>/', views.excluir_mecanico, name='excluir_mecanico'),
-    path('editar-mecanico/<int:pk>/', views.editar_mecanico, name='editarmecanico'),
+    path('editar-mecanico/<int:pk>/', views.editar_mecanico, name='editar_mecanico'),
     path('', views.home, name='home')
 ]

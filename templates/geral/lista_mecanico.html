@@ -20,7 +20,6 @@
         {% for mecanico in mecanicos %}
             <tr>
                 <th scope="row">{{ mecanico.id }}</th>
-                <td>{{ mecanico.oficina }}</td>
                 <td>{{ mecanico.nome }}</td>
                 <td>{{ mecanico.codigo }}</td>
                 <td><a href="{% url 'geral:editar_mecanico' mecanico.id %}" class="btn btn-outline-info btn-sm">Editar <i class="ph ph-recycle"></i> </a>
