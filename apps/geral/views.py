@@ -69,7 +69,7 @@ def editar_oficina(request, pk):
 
 # ************************ - Mecânico - ************************
 @login_required
-def nova_oficina(request):
+def novo_mecanico(request):
     template_name = 'geral/novo_mecanico.html'
     context = {}
     oficina = get_object_or_404(Oficina, usuario=request.user)
