@@ -106,12 +106,12 @@ def excluir_mecanico(request, pk):
 @login_required
 def editar_mecanico(request, pk):
     template_name = 'geral/novo_mecanico.html'
-    context={}
+    context = {}
     mecanico = get_object_or_404(Mecanico, pk=pk)
     if request.method == 'POST':
         form = MecanicoForm(data=request.POST, instance=mecanico)
         form.save()
-        messages.success(request, 'Mecanico atualizada com sucesso')
+        messages.success(request, 'Mecânico atualizada com sucesso')
         return redirect('geral:lista_mecanico')
     form = MecanicoForm(instance=mecanico)
     context['form'] = form
