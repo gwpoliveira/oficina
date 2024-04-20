@@ -39,7 +39,8 @@ def nova_oficina(request):
 @login_required
 def lista_oficina(request):
     template_name = 'geral/lista_oficina.html'
-    oficinas = Oficina.objects.filter(usuario=request.user) # select * from oficina where usuario = usuario_de_sessão
+    oficinas = Oficina.objects.filter(usuario=request.user)
+    # select * from oficina where usuario = usuario_de_sessão
     context = {
         'oficinas': oficinas,
     }
@@ -52,11 +53,10 @@ def excluir_oficina(request, pk):
     oficina.delete()
     messages.info(request, 'Oficina excluída com sucesso')
     return redirect('geral:lista_oficina')
-
 @login_required
 def editar_oficina(request, pk):
     template_name = 'geral/nova_oficina.html'
-    context={}
+    context = {}
     oficina = get_object_or_404(Oficina, pk=pk)
     if request.method == 'POST':
         form = OficinaForm(data=request.POST, instance=oficina)
@@ -116,4 +116,3 @@ def editar_mecanico(request, pk):
     form = MecanicoForm(instance=mecanico)
     context['form'] = form
     return render(request, template_name, context)
-

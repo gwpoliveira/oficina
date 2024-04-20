@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block titulo %}
+
+	 Criar Ordem de Serviço | {{ block.super }}
+
+{% endblock titulo %}
+
+
+{% block main %}
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="{{ form.mecanico.id_for_label }}" class="form-label">{{ form.mecanico.label }}</label>
+            {% render_field form.mecanico class='form-control' placeholder='Escolha o Mecanico....' %}
+        </div>  
+    
+         <div class="mb-3">
+            <label for="{{ form.cliente.id_for_label }}" class="form-label">{{ form.cliente.label }}</label>
+            {% render_field form.cliente class='form-control' placeholder='....' %}
+        </div>
+        
+        <div class="mb-3">
+            <label for="{{ form.veiculo.id_for_label }}" class="form-label">{{ form.veiculo.label }}</label>
+            {% render_field form.veiculo class='form-control' placeholder='....' %}        
+        </div>
+        
+        <div class="mb-3">
+            <label for="{{ form.placa.id_for_label }}" class="form-label">{{ form.placa.label }}</label>
+            {% render_field form.placa class='form-control' placeholder='....' %}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.previsao.id_for_label }}" class="form-label">{{ form.previsao.label }}</label>
+            {% render_field form.previsao class='form-control' placeholder='....' %}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.data_entrada.id_for_label }}" class="form-label">{{ form.data_entrada.label }}</label>
+            {% render_field form.data_entrada class='form-control' placeholder='....' %}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.codigo.id_for_label }}" class="form-label">{{ form.codigo.label }}</label>
+            {% render_field form.codigo class='form-control' placeholder='....' %}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.servico.id_for_label }}" class="form-label">{{ form.servico.label }}</label>
+            {% render_field form.servico class='form-control' placeholder='....' %}
+        </div>
+    
+        <button type="submit" class="btn btn-primary"> Adcionar </button>
+        <a "{% url 'servicos:lista_servicos' %}" class="btn btn-outline-secondary">Cancelar</a>
+    </form>
+{% endblock main %}

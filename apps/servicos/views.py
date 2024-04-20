@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .forms import ServicoForm
+from .forms import ServicoForm, OrdemServicoForm
 
-from .models import Servico
+from .models import Servico, OrdemServico
 from geral.models import Oficina
 
 
@@ -17,6 +17,7 @@ def lista_servicos(request):
         'servicos': servicos,
     }
     return render(request, template_name, context)
+
 
 @login_required
 def novo_servico(request):
@@ -39,7 +40,7 @@ def novo_servico(request):
 @login_required
 def editar_servico(request, pk):
     template_name = 'servicos/novo_servico.html'
-    context={}
+    context = {}
     servico = get_object_or_404(Servico, pk=pk)
     if request.method == 'POST':
         form = ServicoForm(data=request.POST, instance=servico)
@@ -52,3 +53,49 @@ def editar_servico(request, pk):
     context['form'] = form
     return render(request, template_name, context)
 
+
+# ***************************************** Ordem de Serviços *****************************************
+@login_required
+def criar_ordem_servico(request):
+    template_name = 'servicos/criar_ordem_servico.html'
+    context = {}
+    oficina = get_object_or_404(Oficina, usuario=request.user)
+    if request.method == 'POST':
+        form = OrdemServicoForm(request.POST)
+        if form.is_valid():
+            osf = form.save(commit=False)
+            osf.oficina = oficina
+            osf.save()
+            messages.success(request, 'Ordem cadastrado com sucesso')
+            return redirect('servicos:lista_ordem_servico')
+    form = OrdemServicoForm()
+    context['form'] = form
+    return render(request, template_name, context)
+
+
+@login_required
+def lista_ordem_servico(request):
+    template_name = 'servicos/lista_ordem_servico.html'
+    oficina = get_object_or_404(Oficina, usuario=request.user)
+    ordens_servicos = OrdemServico.objects.filter(oficina=oficina)
+    context = {
+        'ordens_servicos': ordens_servicos
+    }
+    return render(request, template_name, context)
+
+
+@login_required
+def editar_ordem_servico(request, pk):
+    template_name = 'servicos/criar_ordem_servico.html'
+    context = {}
+    ordem_servico = get_object_or_404(OrdemServico, pk=pk)
+    if request.method == 'POST':
+        form = OrdemServicoForm(data=request.POST, instance=ordem_servico)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Ordem de servico atualizado com sucesso!')
+            return redirect('servicos:lista_ordem_servico')  # Corrected URL name
+    else:
+        form = OrdemServicoForm(instance=ordem_servico)
+    context['form'] = form
+    return render(request, template_name, context)
